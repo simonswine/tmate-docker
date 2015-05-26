@@ -38,7 +38,7 @@ done
 echo Add this to your \~/.tmate.conf file
 echo "set -g tmate-server-host \"${host}\""
 echo "set -g tmate-server-port \"${port}\""
-echo set -g tmate-identity ""              # Can be specified to use a different SSH key.
+echo "set -g tmate-identity \"\""              # Can be specified to use a different SSH key.
 for alg in $key_algorithms; do
     path="${key_dir}/ssh_host_${alg}_key"
     fingerprint=`ssh-keygen -l -f ${path} 2>&1 | cut -d\  -f 2`
