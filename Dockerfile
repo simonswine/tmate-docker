@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.13
+FROM ubuntu:trusty
 MANTAINER Nicolas Pace <nicolas.pace@unixono.com.ar>
 
 # Set correct environment variables.
