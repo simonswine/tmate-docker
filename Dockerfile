@@ -22,7 +22,7 @@ RUN git clone https://github.com/nviennot/tmate-slave.git /tmp/tmate-slave && \
 ADD /run.sh /run.sh
 
 # Use a volume for the ssh keys
-VOLUME /etc/tmate-slave/keys
+VOLUME /etc/tmate-slave
 
 # Default port
 EXPOSE 2222
