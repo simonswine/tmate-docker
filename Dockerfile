@@ -1,31 +1,30 @@
 FROM ubuntu:trusty
-MANTAINER Nicolas Pace <nicolas.pace@unixono.com.ar>
+MAINTAINER Christian Simon <simon@swine.de>
 
 # Set correct environment variables.
 ENV HOME /root
 
-# Regenerate SSH host keys. baseimage-docker does not contain any, so you
-# have to do that yourself. You may also comment out this instruction; the
-# init system will auto-generate one during boot.
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
-
+# Install dependencies 
 RUN apt-get update && \
-    apt-get -y install git-core build-essential pkg-config libtool libevent-dev libncurses-dev zlib1g-dev automake libssh-dev cmake ruby && \
+    apt-get -y install git-core build-essential pkg-config libtool libevent-dev libncurses-dev zlib1g-dev automake libssh-dev cmake ruby openssh-server && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN git clone https://github.com/nviennot/tmate-slave.git
-
-RUN cd tmate-slave && \
-    ./create_keys.sh && \
+# clone & build tmate
+RUN git clone https://github.com/nviennot/tmate-slave.git /tmp/tmate-slave && \
+    cd /tmp/tmate-slave && \
     ./autogen.sh && \
     ./configure && \
-     make
+     make && \
+     make install && \
+     rm -rf /tmp/tmate-slave
 
-RUN mkdir /etc/service/tmate-slave
-ADD tmate-slave.sh /etc/service/tmate-slave/run
+# Copy run script
+ADD /run.sh /run.sh
 
-RUN mkdir -p /etc/my_init.d
-ADD message.sh /etc/my_init.d/message.sh
+# Use a volume for the ssh keys
+VOLUME /etc/tmate-slave/keys
+
+# Default port
+EXPOSE 2222
+
+CMD ["/bin/bash", "/run.sh"]
