@@ -13,7 +13,7 @@ if [ -z "${HOST}" ]; then
     hostopt=""
     host="<hostname>"
 else
-    hostopt="-h {$HOST}"
+    hostopt="-h ${HOST}"
     host=$HOST
 fi
 
@@ -28,11 +28,11 @@ for alg in $key_algorithms; do
     if [ ! -e $path ]; then
         echo "Key ${alg} not found, generate one"
         ssh-keygen -t ${alg} -f "${path}" -N ''
-    fi  
+    fi
     # ensure rights
     chmod 600 $path
 
-done
+
  
 
 echo Add this to your \~/.tmate.conf file
