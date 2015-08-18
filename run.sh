@@ -31,9 +31,7 @@ for alg in $key_algorithms; do
     fi
     # ensure rights
     chmod 600 $path
-
-
- 
+done
 
 echo Add this to your \~/.tmate.conf file
 echo "set -g tmate-server-host \"${host}\""
